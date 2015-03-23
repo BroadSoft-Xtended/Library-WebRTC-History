@@ -143,11 +143,11 @@
 				&:hover
 					background #4E4E4E
 
-	.enableCallHistory.history-shown .callHistory
+	.callHistory.enableCallHistory.history-shown
 		{fadeInPopup}
 
-	.enableCallHistory:not(.history-shown) .callHistory
+	.callHistory.enableCallHistory:not(.history-shown)
 		{fadeOut}
 
-	.enableCallHistory:not(.connected) .callHistory .callLink
+	.callHistory.enableCallHistory:not(.connected) .callLink
 		display none

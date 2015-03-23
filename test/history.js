@@ -26,8 +26,15 @@ describe('history', function() {
   beforeEach(function() {
     localStorage.clear();
     testUA.deleteAllCookies();
+    configuration.enableCallHistory = true;
   });
 
+  it('history show and hide', function() {
+    eventbus.toggleView(core.constants.VIEW_HISTORY);    
+    testUA.isVisible(historyview.callHistory, true);
+    eventbus.toggleView(core.constants.VIEW_HISTORY);    
+    testUA.isVisible(historyview.callHistory, false);
+  });
   it('persistCall:', function() {
     bdsft_client_instances.history_test.persistCall(rtcSession);
     expect(localStorage.length).toEqual(1);
