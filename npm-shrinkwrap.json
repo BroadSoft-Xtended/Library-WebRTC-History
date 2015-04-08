@@ -110,13 +110,13 @@
       }
     },
     "webrtc-stats": {
-      "version": "0.0.0",
-      "from": "webrtc-stats@git+ssh://git.broadsoftlabs.net:7922/wrtc/stats.git",
-      "resolved": "git+ssh://git.broadsoftlabs.net:7922/wrtc/stats.git#a16e7dd9388b88770e091fea4f24cd859e0c4188",
+      "version": "0.0.1",
+      "from": "../../../../../../var/folders/w5/d_jq90111h9g07_m1bwjvnbr0000gp/T/npm-82371-e57207c7/git-cache-c02bedcdcd0a/85acfb07a302c8f7cddc11abc80b1e111c8aec2c",
+      "resolved": "git+ssh://git.broadsoftlabs.net:7922/wrtc/stats.git#85acfb07a302c8f7cddc11abc80b1e111c8aec2c",
       "dependencies": {
         "webrtc-core": {
           "version": "0.0.1",
-          "from": "../../../../../../var/folders/w5/d_jq90111h9g07_m1bwjvnbr0000gp/T/npm-53785-96b6be89/git-cache-1119e7d8d43f/ad8c7db88eb51d6f7b19e1ee8a7092c5d07a2086",
+          "from": "../../../../../../var/folders/w5/d_jq90111h9g07_m1bwjvnbr0000gp/T/npm-82371-e57207c7/git-cache-c157967d03f4/ad8c7db88eb51d6f7b19e1ee8a7092c5d07a2086",
           "resolved": "git+ssh://git.broadsoftlabs.net:7922/wrtc/webrtc-core.git#ad8c7db88eb51d6f7b19e1ee8a7092c5d07a2086",
           "dependencies": {
             "ejs": {
@@ -182,7 +182,7 @@
             },
             "exsip": {
               "version": "2.0.0",
-              "from": "../../../../../../var/folders/w5/d_jq90111h9g07_m1bwjvnbr0000gp/T/npm-53785-96b6be89/git-cache-5d7d123d72c9/82c58cf6111cfaea761b1a3f43e002c4fbb7916b",
+              "from": "../../../../../../var/folders/w5/d_jq90111h9g07_m1bwjvnbr0000gp/T/npm-82371-e57207c7/git-cache-321b46b29b32/82c58cf6111cfaea761b1a3f43e002c4fbb7916b",
               "resolved": "git://github.com/broadsoftxtended/ExSIP.git#82c58cf6111cfaea761b1a3f43e002c4fbb7916b",
               "dependencies": {
                 "sdp-transform": {
