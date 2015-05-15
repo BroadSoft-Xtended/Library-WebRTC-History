@@ -29,12 +29,6 @@ describe('history', function() {
     configuration.enableCallHistory = true;
   });
 
-  it('history show and hide', function() {
-    eventbus.toggleView(core.constants.VIEW_HISTORY);    
-    testUA.isVisible(historyview.callHistory, true);
-    eventbus.toggleView(core.constants.VIEW_HISTORY);    
-    testUA.isVisible(historyview.callHistory, false);
-  });
   it('persistCall:', function() {
     bdsft_client_instances.history_test.persistCall(rtcSession);
     expect(localStorage.length).toEqual(1);
@@ -43,7 +37,6 @@ describe('history', function() {
   });
   it('persistCall and toggle:', function() {
     bdsft_client_instances.history_test.persistCall(rtcSession);
-    historyview.toggle();
     expect(bdsft_client_instances.history_test.pageNumber).toEqual(0);
     expect(historyview.historyForward.is(":visible")).toEqual(false);
     expect(historyview.historyBack.is(":visible")).toEqual(false);
@@ -52,7 +45,6 @@ describe('history', function() {
 
   it('persistCall and toggle and show details', function() {
     bdsft_client_instances.history_test.persistCall(rtcSession);
-    historyview.toggle();
     historyview.rows[0].trigger("click");
     expect(historyview.callHistoryDetails.is(":visible")).toEqual(true, "Should show details");
     expect(historyview.resolutionIn.text()).toEqual("test-video-googFrameWidthReceivedxtest-video-googFrameHeightReceived");
@@ -76,7 +68,6 @@ describe('history', function() {
       callHistoryHidden = true;
     }
     bdsft_client_instances.history_test.persistCall(createRtcSession("sip:remote1@webrtc.broadsoft.com"));
-    historyview.toggle();
     historyview.rows[0].trigger("click");
     historyview.callLink.trigger("click");
     expect(destination).toEqual("remote1", "Should trigger call");
@@ -93,7 +84,6 @@ describe('history', function() {
     }
     bdsft_client_instances.history_test.persistCall(createRtcSession("sip:remote1@webrtc.broadsoft.com"));
     testUA.startCall();
-    historyview.toggle();
     historyview.rows[0].trigger("click");
     historyview.callLink.trigger("click");
     expect(called).toEqual(true);
@@ -122,7 +112,6 @@ describe('history', function() {
     bdsft_client_instances.history_test.persistCall(session1);
     bdsft_client_instances.history_test.persistCall(session2);
     bdsft_client_instances.history_test.persistCall(session3);
-    historyview.toggle();
     expect(bdsft_client_instances.history_test.pageNumber).toEqual(0);
     expect(historyview.content.text().indexOf("remote1") === -1).toEqual(true, "Should not contain session1 destination");
     expect(historyview.content.text().indexOf("remote2") !== -1).toEqual(true, "Should contain session2 destination");
@@ -137,7 +126,6 @@ describe('history', function() {
     bdsft_client_instances.history_test.persistCall(session1);
     bdsft_client_instances.history_test.persistCall(session2);
     bdsft_client_instances.history_test.persistCall(session3);
-    historyview.toggle();
     expect(bdsft_client_instances.history_test.pageNumber).toEqual(0);
     historyview.historyClear.trigger("click");
     expect(bdsft_client_instances.history_test.pageNumber).toEqual(0);
