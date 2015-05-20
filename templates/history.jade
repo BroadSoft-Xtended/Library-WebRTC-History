@@ -2,18 +2,14 @@
   .callHistory.popup.fadeable.classes
     .content
     .classHistoryActions
-      //
-        <span class="historyBack">
-        <a href="" title="Previous" class="icon-arrow-up-thick"></a>
-        </span>
+      span.historyForward
+        a.icon-arrow-down-thick(href='', title='Next')
+      span.historyBack
+        a.icon-arrow-up-thick(href='', title='Previous')
       span.historyClear
         a(href='', title='Clear History') Clear
       span.historyClose
         a(href='', title='Close History') Close
-      //
-        <span class="historyForward">
-        <a href="" title="Next" class="icon-arrow-down-thick"></a>
-        </span>
     .callHistoryDetails.popup
       #history-dt-close-container
         span.historyDetailsClose.cell

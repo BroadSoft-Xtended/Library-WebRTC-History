@@ -38,8 +38,8 @@ describe('history', function() {
   it('persistCall and toggle:', function() {
     bdsft_client_instances.history_test.persistCall(rtcSession);
     expect(bdsft_client_instances.history_test.pageNumber).toEqual(0);
-    expect(historyview.historyForward.is(":visible")).toEqual(false);
-    expect(historyview.historyBack.is(":visible")).toEqual(false);
+    expect(historyview.historyForward.is(":visible")).toEqual(true);
+    expect(historyview.historyBack.is(":visible")).toEqual(true);
     expect(historyview.content.text().indexOf("remote") !== -1).toEqual(true, "Should contain content");
   });
 
@@ -130,8 +130,8 @@ describe('history', function() {
     historyview.historyClear.trigger("click");
     expect(bdsft_client_instances.history_test.pageNumber).toEqual(0);
     expect(historyview.content.text()).toEqual("", "Should not contain content");
-    expect(historyview.historyForward.is(":visible")).toEqual(false);
-    expect(historyview.historyBack.is(":visible")).toEqual(false);
+    expect(historyview.historyForward.is(":visible")).toEqual(true);
+    expect(historyview.historyBack.is(":visible")).toEqual(true);
   });
 
   // TODO - add back after checking on forward / backward buttons?
