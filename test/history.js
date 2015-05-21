@@ -30,21 +30,21 @@ describe('history', function() {
   });
 
   it('persistCall:', function() {
-    bdsft_client_instances.history_test.persistCall(rtcSession);
+    bdsft_client_instances.test.history.persistCall(rtcSession);
     expect(localStorage.length).toEqual(1);
     expect(localStorage[core.constants.HISTORY_PAGE_PREFIX+"0"]).toEqual(getCallCookieValue());
-    expect(bdsft_client_instances.history_test.pagesAsString(), [getCallCookieValue()]);
+    expect(bdsft_client_instances.test.history.pagesAsString(), [getCallCookieValue()]);
   });
   it('persistCall and toggle:', function() {
-    bdsft_client_instances.history_test.persistCall(rtcSession);
-    expect(bdsft_client_instances.history_test.pageNumber).toEqual(0);
+    bdsft_client_instances.test.history.persistCall(rtcSession);
+    expect(bdsft_client_instances.test.history.pageNumber).toEqual(0);
     expect(historyview.historyForward.is(":visible")).toEqual(true);
     expect(historyview.historyBack.is(":visible")).toEqual(true);
     expect(historyview.content.text().indexOf("remote") !== -1).toEqual(true, "Should contain content");
   });
 
   it('persistCall and toggle and show details', function() {
-    bdsft_client_instances.history_test.persistCall(rtcSession);
+    bdsft_client_instances.test.history.persistCall(rtcSession);
     historyview.rows[0].trigger("click");
     expect(historyview.callHistoryDetails.is(":visible")).toEqual(true, "Should show details");
     expect(historyview.resolutionIn.text()).toEqual("test-video-googFrameWidthReceivedxtest-video-googFrameHeightReceived");
@@ -67,7 +67,7 @@ describe('history', function() {
     historyview.callHistoryDetails.hide = function(){
       callHistoryHidden = true;
     }
-    bdsft_client_instances.history_test.persistCall(createRtcSession("sip:remote1@webrtc.broadsoft.com"));
+    bdsft_client_instances.test.history.persistCall(createRtcSession("sip:remote1@webrtc.broadsoft.com"));
     historyview.rows[0].trigger("click");
     historyview.callLink.trigger("click");
     expect(destination).toEqual("remote1", "Should trigger call");
@@ -82,7 +82,7 @@ describe('history', function() {
     historyview.callHistoryDetails.hide = function(){
       callHistoryHidden = true;
     }
-    bdsft_client_instances.history_test.persistCall(createRtcSession("sip:remote1@webrtc.broadsoft.com"));
+    bdsft_client_instances.test.history.persistCall(createRtcSession("sip:remote1@webrtc.broadsoft.com"));
     testUA.startCall();
     historyview.rows[0].trigger("click");
     historyview.callLink.trigger("click");
@@ -91,44 +91,44 @@ describe('history', function() {
   });
 
   it('persistCall for multiple calls', function() {
-    bdsft_client_instances.history_test.persistCall(session1);
-    bdsft_client_instances.history_test.persistCall(session2);
+    bdsft_client_instances.test.history.persistCall(session1);
+    bdsft_client_instances.test.history.persistCall(session2);
     expect(localStorage.length).toEqual(1);
     expect(localStorage[core.constants.HISTORY_PAGE_PREFIX+"0"]).toEqual(getCallCookieValue(session2) + "~" + getCallCookieValue(session1));
-    expect(bdsft_client_instances.history_test.pages(), [getCallCookieValue(session2) + "~" + getCallCookieValue(session1)]);
+    expect(bdsft_client_instances.test.history.pages(), [getCallCookieValue(session2) + "~" + getCallCookieValue(session1)]);
   });
   it('persistCall for multiple calls and higher than callsPerPage', function() {
-    bdsft_client_instances.history_test.callsPerPage = 2;
-    bdsft_client_instances.history_test.persistCall(session1);
-    bdsft_client_instances.history_test.persistCall(session2);
-    bdsft_client_instances.history_test.persistCall(session3);
+    bdsft_client_instances.test.history.callsPerPage = 2;
+    bdsft_client_instances.test.history.persistCall(session1);
+    bdsft_client_instances.test.history.persistCall(session2);
+    bdsft_client_instances.test.history.persistCall(session3);
     expect(localStorage.length).toEqual(2);
     expect(localStorage[core.constants.HISTORY_PAGE_PREFIX+"0"]).toEqual(getCallCookieValue(session2) + "~" + getCallCookieValue(session1));
     expect(localStorage[core.constants.HISTORY_PAGE_PREFIX+"1"]).toEqual(getCallCookieValue(session3));
-    expect(bdsft_client_instances.history_test.pagesAsString(), [getCallCookieValue(session3), getCallCookieValue(session2) + "~" + getCallCookieValue(session1)]);
+    expect(bdsft_client_instances.test.history.pagesAsString(), [getCallCookieValue(session3), getCallCookieValue(session2) + "~" + getCallCookieValue(session1)]);
   });
   it('multiple pages and toggle', function() {
-    bdsft_client_instances.history_test.callsPerPage = 2;
-    bdsft_client_instances.history_test.persistCall(session1);
-    bdsft_client_instances.history_test.persistCall(session2);
-    bdsft_client_instances.history_test.persistCall(session3);
-    expect(bdsft_client_instances.history_test.pageNumber).toEqual(0);
+    bdsft_client_instances.test.history.callsPerPage = 2;
+    bdsft_client_instances.test.history.persistCall(session1);
+    bdsft_client_instances.test.history.persistCall(session2);
+    bdsft_client_instances.test.history.persistCall(session3);
+    expect(bdsft_client_instances.test.history.pageNumber).toEqual(0);
     expect(historyview.content.text().indexOf("remote1") === -1).toEqual(true, "Should not contain session1 destination");
     expect(historyview.content.text().indexOf("remote2") !== -1).toEqual(true, "Should contain session2 destination");
     expect(historyview.content.text().indexOf("remote3") !== -1).toEqual(true, "Should contain session3 destination");
     // TODO - add back after checking on forward / backward buttons?
-    // expect(bdsft_client_instances.history_test.historyForward.is(":visible")).toEqual( true);
-    // expect(bdsft_client_instances.history_test.historyBack.is(":visible")).toEqual( false);
+    // expect(bdsft_client_instances.test.history.historyForward.is(":visible")).toEqual( true);
+    // expect(bdsft_client_instances.test.history.historyBack.is(":visible")).toEqual( false);
   });
 
   it('multiple pages, toggle, clear and toggle again', function() {
-    bdsft_client_instances.history_test.callsPerPage = 2;
-    bdsft_client_instances.history_test.persistCall(session1);
-    bdsft_client_instances.history_test.persistCall(session2);
-    bdsft_client_instances.history_test.persistCall(session3);
-    expect(bdsft_client_instances.history_test.pageNumber).toEqual(0);
+    bdsft_client_instances.test.history.callsPerPage = 2;
+    bdsft_client_instances.test.history.persistCall(session1);
+    bdsft_client_instances.test.history.persistCall(session2);
+    bdsft_client_instances.test.history.persistCall(session3);
+    expect(bdsft_client_instances.test.history.pageNumber).toEqual(0);
     historyview.historyClear.trigger("click");
-    expect(bdsft_client_instances.history_test.pageNumber).toEqual(0);
+    expect(bdsft_client_instances.test.history.pageNumber).toEqual(0);
     expect(historyview.content.text()).toEqual("", "Should not contain content");
     expect(historyview.historyForward.is(":visible")).toEqual(true);
     expect(historyview.historyBack.is(":visible")).toEqual(true);
@@ -137,32 +137,32 @@ describe('history', function() {
   // TODO - add back after checking on forward / backward buttons?
   // it('multiple pages and toggle and click forward', function() {
   //   client = create(config)
-  //   bdsft_client_instances.history_test.callsPerPage = 2;
-  //   bdsft_client_instances.history_test.persistCall(session1);
-  //   bdsft_client_instances.history_test.persistCall(session2);
-  //   bdsft_client_instances.history_test.persistCall(session3);
-  //   bdsft_client_instances.history_test.toggle();
-  //   bdsft_client_instances.history_test.historyForward.trigger("click");
-  //   expect(bdsft_client_instances.history_test.pageNumber).toEqual( 1);
-  //   expect(bdsft_client_instances.history_test.content.text().indexOf("remote1") !== -1, true).toEqual( "Should contain session1 destination");
-  //   expect(bdsft_client_instances.history_test.content.text().indexOf("remote2") === -1, true).toEqual( "Should not contain session2 destination");
-  //   expect(bdsft_client_instances.history_test.content.text().indexOf("remote3") === -1, true).toEqual( "Should not contain session3 destination");
-  //   expect(bdsft_client_instances.history_test.historyForward.is(":visible"), false).toEqual( "Should show forward button");
-  //   expect(bdsft_client_instances.history_test.historyBack.is(":visible"), true).toEqual( "Should hide back button");
+  //   bdsft_client_instances.test.history.callsPerPage = 2;
+  //   bdsft_client_instances.test.history.persistCall(session1);
+  //   bdsft_client_instances.test.history.persistCall(session2);
+  //   bdsft_client_instances.test.history.persistCall(session3);
+  //   bdsft_client_instances.test.history.toggle();
+  //   bdsft_client_instances.test.history.historyForward.trigger("click");
+  //   expect(bdsft_client_instances.test.history.pageNumber).toEqual( 1);
+  //   expect(bdsft_client_instances.test.history.content.text().indexOf("remote1") !== -1, true).toEqual( "Should contain session1 destination");
+  //   expect(bdsft_client_instances.test.history.content.text().indexOf("remote2") === -1, true).toEqual( "Should not contain session2 destination");
+  //   expect(bdsft_client_instances.test.history.content.text().indexOf("remote3") === -1, true).toEqual( "Should not contain session3 destination");
+  //   expect(bdsft_client_instances.test.history.historyForward.is(":visible"), false).toEqual( "Should show forward button");
+  //   expect(bdsft_client_instances.test.history.historyBack.is(":visible"), true).toEqual( "Should hide back button");
   // });
 
   it('persistCall for multiple calls and higher than callsPerPage and pages above maxPages', function() {
-    bdsft_client_instances.history_test.callsPerPage = 2;
-    bdsft_client_instances.history_test.maxPages = 2;
-    bdsft_client_instances.history_test.persistCall(session1);
-    bdsft_client_instances.history_test.persistCall(session2);
-    bdsft_client_instances.history_test.persistCall(session3);
-    bdsft_client_instances.history_test.persistCall(session4);
-    bdsft_client_instances.history_test.persistCall(session5);
+    bdsft_client_instances.test.history.callsPerPage = 2;
+    bdsft_client_instances.test.history.maxPages = 2;
+    bdsft_client_instances.test.history.persistCall(session1);
+    bdsft_client_instances.test.history.persistCall(session2);
+    bdsft_client_instances.test.history.persistCall(session3);
+    bdsft_client_instances.test.history.persistCall(session4);
+    bdsft_client_instances.test.history.persistCall(session5);
     expect(localStorage.length).toEqual(2);
     expect(localStorage[core.constants.HISTORY_PAGE_PREFIX+"0"]).toEqual(getCallCookieValue(session3) + "~" + getCallCookieValue(session2));
     expect(localStorage[core.constants.HISTORY_PAGE_PREFIX+"1"]).toEqual(getCallCookieValue(session5) + "~" + getCallCookieValue(session4));
-    expect(bdsft_client_instances.history_test.pagesAsString()).toEqual([
+    expect(bdsft_client_instances.test.history.pagesAsString()).toEqual([
       getCallCookieValue(session5) + "~" + getCallCookieValue(session4), 
       getCallCookieValue(session3) + "~" + getCallCookieValue(session2)
       ]);
