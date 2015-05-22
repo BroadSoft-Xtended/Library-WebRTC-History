@@ -7,6 +7,7 @@ describe('history', function() {
   before(function(){
     core = require('webrtc-core');
     testUA = core.testUA;
+    testUA.setupLocalStorage();
     var config = {enableCallHistory: true};
     testUA.createCore('eventbus');
     testUA.createCore('configuration', config);
@@ -14,7 +15,6 @@ describe('history', function() {
     testUA.createModelAndView('stats', {stats: require('webrtc-stats')});
     testUA.createModelAndView('history', {history: require('../'), stats: require('webrtc-stats')});
     testUA.mockWebRTC();
-    testUA.setupLocalStorage();
     mockStats();
     rtcSession = createRtcSession();
     session1 = createRtcSession("remote1")
