@@ -3,9 +3,9 @@
     .content
     .classHistoryActions
       span.historyForward
-        a.icon-arrow-down-thick(href='', title='Next')
+        a.historyForwardIcon.icon-arrow-down-thick(href='', title='Next')
       span.historyBack
-        a.icon-arrow-up-thick(href='', title='Previous')
+        a.historyBackIcon.icon-arrow-up-thick(href='', title='Previous')
       span.historyClear
         a(href='', title='Clear History') Clear
       span.historyClose
@@ -15,31 +15,31 @@
         span.historyDetailsClose.cell
           a.icon-cancel3(href='', title='Close')
       .table
-        .row
+        .row.resolutionInRow
           .cell Resolution In : 
           .resolutionIn.cell.default-color
-        .row
+        .row.resolutionOutRow
           .cell Resolution Out : 
           .resolutionOut.cell.default-color
-        .row
+        .row.bitrateInRow
           .cell Bitrate In : 
           .bitrateIn.cell.default-color
-        .row
+        .row.bitrateOutRow
           .cell Bitrate Out : 
           .bitrateOut.cell.default-color
-        .row
+        .row.frameRateInRow
           .cell Frame Rate In : 
           .frameRateIn.cell.default-color
-        .row
+        .row.frameRateOutRow
           .cell Frame Rate Out : 
           .frameRateOut.cell.default-color
-        .row
+        .row.audioLostPerRow
           .cell Audio Lost : 
           .audioLostPer.cell.default-color %
-        .row
+        .row.videoLostPerRow
           .cell Video Out : 
           .videoLostPer.cell.default-color %
-        .row
+        .row.jitterRow
           .cell Jitter : 
           .jitter.cell.default-color
       .actions.table
