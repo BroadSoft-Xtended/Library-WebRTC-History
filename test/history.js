@@ -8,10 +8,8 @@ describe('history', function() {
     core = require('webrtc-core');
     testUA = core.testUA;
     testUA.setupLocalStorage();
-    var config = {enableCallHistory: true};
     testUA.createCore('eventbus');
-    testUA.createCore('configuration', config);
-    testUA.createCore('sipstack', config);
+    testUA.createCore('sipstack');
     testUA.createModelAndView('stats', {stats: require('webrtc-stats')});
     testUA.createModelAndView('history', {history: require('../'), stats: require('webrtc-stats')});
     testUA.mockWebRTC();
@@ -26,7 +24,6 @@ describe('history', function() {
   beforeEach(function() {
     localStorage.clear();
     testUA.deleteAllCookies();
-    configuration.enableCallHistory = true;
   });
 
   it('persistCall:', function() {
