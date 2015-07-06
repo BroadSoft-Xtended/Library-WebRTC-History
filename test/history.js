@@ -8,10 +8,15 @@ describe('history', function() {
     core = require('webrtc-core');
     testUA = core.testUA;
     testUA.setupLocalStorage();
-    testUA.createCore('eventbus');
     testUA.createCore('sipstack');
-    testUA.createModelAndView('stats', {stats: require('webrtc-stats')});
-    testUA.createModelAndView('history', {history: require('../'), stats: require('webrtc-stats')});
+    testUA.createModelAndView('history', {history: require('../'), 
+      stats: require('webrtc-stats'),
+      callcontrol: require('webrtc-callcontrol'),
+      messages: require('webrtc-messages')
+    });
+    statsview = bdsft_client_instances.test.statsview;
+    stats = bdsft_client_instances.test.stats;
+    callcontrol = bdsft_client_instances.test.callcontrol;
     testUA.mockWebRTC();
     mockStats();
     rtcSession = createRtcSession();
@@ -35,56 +40,38 @@ describe('history', function() {
   it('persistCall and toggle:', function() {
     bdsft_client_instances.test.history.persistCall(rtcSession);
     expect(bdsft_client_instances.test.history.pageNumber).toEqual(0);
-    expect(historyview.historyForward.is(":visible")).toEqual(true);
-    expect(historyview.historyBack.is(":visible")).toEqual(true);
+    expect(historyview.forward.is(":visible")).toEqual(true);
+    expect(historyview.back.is(":visible")).toEqual(true);
     expect(historyview.content.text().indexOf("remote") !== -1).toEqual(true, "Should contain content");
   });
 
   it('persistCall and toggle and show details', function() {
     bdsft_client_instances.test.history.persistCall(rtcSession);
-    historyview.rows[0].trigger("click");
-    expect(historyview.callHistoryDetails.is(":visible")).toEqual(true, "Should show details");
-    expect(historyview.resolutionIn.text()).toEqual("test-video-googFrameWidthReceivedxtest-video-googFrameHeightReceived");
-    expect(historyview.resolutionOut.text()).toEqual("test-video-googFrameWidthSentxtest-video-googFrameHeightSent");
-    expect(historyview.bitrateIn.text()).toEqual("avg-video-kiloBitsReceivedPerSecond");
-    expect(historyview.bitrateOut.text()).toEqual("avg-video-kiloBitsSentPerSecond");
-    expect(historyview.frameRateIn.text()).toEqual("avg-video-googFrameRateReceived");
-    expect(historyview.frameRateOut.text()).toEqual("avg-video-googFrameRateSent");
-    expect(historyview.audioLostPer.text()).toEqual("avg-audio-packetsLostPer");
-    expect(historyview.videoLostPer.text()).toEqual("avg-video-packetsLostPer");
-    expect(historyview.jitter.text()).toEqual("avg-audio-googJitterReceived");
+    historyview.rows[0].view.trigger("click");
+    expect(historyview.view.find('.callHistoryDetails').is(":visible")).toEqual(true, "Should show details");
+    var keys = require('webrtc-stats').constants.keys;
+    for(var i=0; i < keys.length; i++) {
+      var key = keys[i];
+      expect(statsview[core.utils.camelize('avg '+key)].text()).toEqual("avg-"+key);
+    }
   });
   it('persistCall and toggle and show details and call', function() {
     testUA.connect();
-    var destination = "";
-    eventbus.on('call', function(e){
-      destination = e.destination;
-    });
-    var callHistoryHidden = false;
-    historyview.callHistoryDetails.hide = function(){
-      callHistoryHidden = true;
-    }
     bdsft_client_instances.test.history.persistCall(createRtcSession("sip:remote1@webrtc.broadsoft.com"));
-    historyview.rows[0].trigger("click");
+    historyview.rows[0].view.trigger("click");
+    expect(bdsft_client_instances.test.history.callSelected).toEqual("call-selected-0");
     historyview.callLink.trigger("click");
-    expect(destination).toEqual("remote1", "Should trigger call");
-    expect(callHistoryHidden).toEqual(true);
+    expect(callcontrol.destination).toEqual("remote1", "Should trigger call");
+    expect(bdsft_client_instances.test.history.callSelected).toEqual(undefined);
   });
   it('WEBRTC-34 : persistCall and toggle and show details and call with existing call', function() {
-    var called = false;
-    eventbus.on('call', function(e){
-      called = true;
-    });
-    var callHistoryHidden = false;
-    historyview.callHistoryDetails.hide = function(){
-      callHistoryHidden = true;
-    }
     bdsft_client_instances.test.history.persistCall(createRtcSession("sip:remote1@webrtc.broadsoft.com"));
     testUA.startCall();
-    historyview.rows[0].trigger("click");
+    historyview.rows[0].view.trigger("click");
+    expect(bdsft_client_instances.test.history.callSelected).toEqual("call-selected-0");
     historyview.callLink.trigger("click");
-    expect(called).toEqual(true);
-    expect(callHistoryHidden).toEqual(true);
+    expect(callcontrol.destination).toEqual('remote1');
+    expect(bdsft_client_instances.test.history.callSelected).toEqual(undefined);
   });
 
   it('persistCall for multiple calls', function() {
@@ -114,8 +101,8 @@ describe('history', function() {
     expect(historyview.content.text().indexOf("remote2") !== -1).toEqual(true, "Should contain session2 destination");
     expect(historyview.content.text().indexOf("remote3") !== -1).toEqual(true, "Should contain session3 destination");
     // TODO - add back after checking on forward / backward buttons?
-    // expect(bdsft_client_instances.test.history.historyForward.is(":visible")).toEqual( true);
-    // expect(bdsft_client_instances.test.history.historyBack.is(":visible")).toEqual( false);
+    // expect(bdsft_client_instances.test.history.forward.is(":visible")).toEqual( true);
+    // expect(bdsft_client_instances.test.history.back.is(":visible")).toEqual( false);
   });
 
   it('multiple pages, toggle, clear and toggle again', function() {
@@ -124,11 +111,11 @@ describe('history', function() {
     bdsft_client_instances.test.history.persistCall(session2);
     bdsft_client_instances.test.history.persistCall(session3);
     expect(bdsft_client_instances.test.history.pageNumber).toEqual(0);
-    historyview.historyClear.trigger("click");
+    historyview.clear.trigger("click");
     expect(bdsft_client_instances.test.history.pageNumber).toEqual(0);
     expect(historyview.content.text()).toEqual("", "Should not contain content");
-    expect(historyview.historyForward.is(":visible")).toEqual(true);
-    expect(historyview.historyBack.is(":visible")).toEqual(true);
+    expect(historyview.forward.is(":visible")).toEqual(true);
+    expect(historyview.back.is(":visible")).toEqual(true);
   });
 
   // TODO - add back after checking on forward / backward buttons?
@@ -139,13 +126,13 @@ describe('history', function() {
   //   bdsft_client_instances.test.history.persistCall(session2);
   //   bdsft_client_instances.test.history.persistCall(session3);
   //   bdsft_client_instances.test.history.toggle();
-  //   bdsft_client_instances.test.history.historyForward.trigger("click");
+  //   bdsft_client_instances.test.history.forward.trigger("click");
   //   expect(bdsft_client_instances.test.history.pageNumber).toEqual( 1);
   //   expect(bdsft_client_instances.test.history.content.text().indexOf("remote1") !== -1, true).toEqual( "Should contain session1 destination");
   //   expect(bdsft_client_instances.test.history.content.text().indexOf("remote2") === -1, true).toEqual( "Should not contain session2 destination");
   //   expect(bdsft_client_instances.test.history.content.text().indexOf("remote3") === -1, true).toEqual( "Should not contain session3 destination");
-  //   expect(bdsft_client_instances.test.history.historyForward.is(":visible"), false).toEqual( "Should show forward button");
-  //   expect(bdsft_client_instances.test.history.historyBack.is(":visible"), true).toEqual( "Should hide back button");
+  //   expect(bdsft_client_instances.test.history.forward.is(":visible"), false).toEqual( "Should show forward button");
+  //   expect(bdsft_client_instances.test.history.back.is(":visible"), true).toEqual( "Should hide back button");
   // });
 
   it('persistCall for multiple calls and higher than callsPerPage and pages above maxPages', function() {
@@ -167,19 +154,7 @@ describe('history', function() {
 
   function getCallCookieValue(session) {
     session = session || rtcSession;
-    return session.start_time.getTime() + "|" + session.remote_identity.uri + "|up|" + getStatsCookieValue() + "|00:00:00"
-  }
-
-  function getStatsCookieValue() {
-    return "test-video-googFrameWidthReceivedxtest-video-googFrameHeightReceived|" +
-      "test-video-googFrameWidthSentxtest-video-googFrameHeightSent|" +
-      "avg-video-kiloBitsReceivedPerSecond|" +
-      "avg-video-kiloBitsSentPerSecond|" +
-      "avg-video-googFrameRateReceived|" +
-      "avg-video-googFrameRateSent|" +
-      "avg-audio-packetsLostPer|" +
-      "avg-video-packetsLostPer|" +
-      "avg-audio-googJitterReceived";
+    return session.start_time.getTime() + "|" + session.remote_identity.uri + "|up|" + JSON.stringify(stats.getAllAvg()) + "|00:00:00"
   }
 
   function createRtcSession(uri) {
@@ -194,11 +169,11 @@ describe('history', function() {
   }
 
   function mockStats() {
-    stats.getValue = function(type, name) {
-      return "test-" + type + "-" + name;
-    }
-    stats.getAvg = function(type, name) {
-      return "avg-" + type + "-" + name;
+    var keys = require('webrtc-stats').constants.keys;
+    for(var i=0; i < keys.length; i++) {
+      var key = keys[i];
+      stats[key] = 'test-'+key;
+      stats[core.utils.camelize('avg '+key)] = 'avg-'+key;
     }
   }
 });

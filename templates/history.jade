@@ -1,53 +1,25 @@
-.bdsft-client
+.bdsft-webrtc
   .callHistory.popup.fadeable.classes
-    .content
-    .classHistoryActions
-      span.historyForward
-        a.historyForwardIcon.icon-arrow-down-thick(href='', title='Next')
-      span.historyBack
-        a.historyBackIcon.icon-arrow-up-thick(href='', title='Previous')
-      span.historyClear
-        a(href='', title='Clear History') Clear
-      span.historyClose
-        a(href='', title='Close History') Close
-    .callHistoryDetails.popup
-      #history-dt-close-container
-        span.historyDetailsClose.cell
-          a.icon-cancel3(href='', title='Close')
-      .table
-        .row.resolutionInRow
-          .cell Resolution In : 
-          .resolutionIn.cell.default-color
-        .row.resolutionOutRow
-          .cell Resolution Out : 
-          .resolutionOut.cell.default-color
-        .row.bitrateInRow
-          .cell Bitrate In : 
-          .bitrateIn.cell.default-color
-        .row.bitrateOutRow
-          .cell Bitrate Out : 
-          .bitrateOut.cell.default-color
-        .row.frameRateInRow
-          .cell Frame Rate In : 
-          .frameRateIn.cell.default-color
-        .row.frameRateOutRow
-          .cell Frame Rate Out : 
-          .frameRateOut.cell.default-color
-        .row.audioLostPerRow
-          .cell Audio Lost : 
-          .audioLostPer.cell.default-color %
-        .row.videoLostPerRow
-          .cell Video Out : 
-          .videoLostPer.cell.default-color %
-        .row.jitterRow
-          .cell Jitter : 
-          .jitter.cell.default-color
-      .actions.table
-        a.callLink.cell(href='', title='Call')
-    .historyRowSample
+    .table
       .row
-        a.hist-destination(href='', title='Number')
-        span.hist-direction
-        span.hist-date
-        span.hist-length
-        span.hist-details-arrow.icon-angle-right
+        .cell
+          .content
+        .cell.callHistoryDetails.details
+          #history-dt-close-container
+            span.detailsClose.cell
+              a.icon-cancel3(href='', title='Close')
+          .statsHolder
+      .row
+        .cell.classHistoryActions
+          span.paging
+            .forward
+              a.historyForwardIcon.icon-arrow-down-thick(href='', title='Next')
+          span.paging
+            .back
+              a.historyBackIcon.icon-arrow-up-thick(href='', title='Previous')
+          span.clear
+            a(href='', title='Clear History') Clear
+          span.close
+            a(href='', title='Close History') Close
+        .cell.actions.details
+          a.callLink(href='', title='Call')

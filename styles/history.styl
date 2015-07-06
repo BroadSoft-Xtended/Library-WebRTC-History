@@ -1,81 +1,35 @@
-.bdsft-client
+.bdsft-webrtc
 	.callHistory
 		position absolute
-		height 258px
 		right auto
 		left 200px
 		bottom 40px
 		top auto
 		background #292929
-		overflow hidden
 		background-color #292929
 		border-radius 0
 		border 1px solid #3c3c3c
 		box-shadow none
 		color #999999
 		z-index 200
-		padding 0
-		.historyForward, .historyBack, .historyForwardIcon, .historyBackIcon
-			display inline-block
-			width 20px
-			text-align center
+		padding 10px
+		.details
+			display none
 		.rowSpace
 			padding .5em
-		.actions
-			margin-top 12px
+		.actions, .classHistoryActions
+			text-align center
+			vertical-align middle
+			height 40px
+		.classHistoryActions
+			.paging
+				display inline-block
+				width 20px
+				text-align center
 		.content
-			padding 16px 0 10px 0
-			height 68%
-			width 200px
-			overflow auto
+			padding 0px
 			margin-bottom 10px
-			.history-row:hover, .history-row.active
-				background #353535
-			.history-row
-				cursor pointer
-				position relative
-				.row
-					display block
-					margin 0
-					position relative
-					height 46px
-				.hist-direction
-					position absolute
-					color #3DA005
-					left 3px
-					font-family arial
-					font-size 18px
-					top 6px
-				.icon-arrow-down-thick
-					color #E9651D
-				.hist-destination
-					position absolute
-					color #B3B3B3
-					left 25px
-					font-family arial
-					font-size 18px
-					text-decoration none
-					top 6px
-				.hist-date
-					position absolute
-					color #B3B3B3
-					left 26px
-					font-family arial
-					font-size 10px
-					top 29px
-				.hist-length
-					position absolute
-					color #B3B3B3
-					left 104px
-					font-family arial
-					font-size 10px
-					top 29px
-				.hist-details-arrow
-					position absolute
-					right 8px
-					font-size 16px
-					top 14px
-		.historyClose
+		.close
 			a
 				color #04AFF0
 				font-size 14px
@@ -84,54 +38,27 @@
 				margin-left 8px
 				&:hover
 					color #017EAD
+		.callLink
+			display inline-block
+			background #6F6F6F
+			padding 6px 10px 6px 10px
+			text-decoration none
+			font-weight bold
+			color #FFF !important
+			border-radius 50px
 		.callHistoryDetails
-			background white
-			width 194px
-			height auto
-			clear both
-			top 0
-			bottom -1
-			left 201px
-			right auto
-			box-shadow none
-			border-radius 0
+			padding 10px
 			background #292929
-			border 1px solid #3c3c3c
-			border-top none
-			overflow auto
-			.callLink
-				text-align left
-				background #6F6F6F
-				float left
-				padding 6px 10px 6px 10px
-				text-decoration none
-				font-weight bold
-				color #FFF !important
-				border-radius 50px
-				font-size 14px !important
-			.historyDetailsClose
-				text-align right
-				margin-top 10px
-				text-align right
-				margin-top 10px
-				display inline-block !important
-				height 26px
-				margin-top 0
-				.icon-ok
-					margin 0px
+			vertical-align top
+			font-size 14px !important
+			box-shadow 2px 0 0 0 #888, 0 2px 0 0 #888, 2px 2px 0 0 #888, 2px 0 0 0 #888 inset, 0 2px 0 0 #888 inset
+			.detailsClose
 				a
 					text-decoration none
 					outline-color rgba(0, 0, 0, 0)
 					color #aaa
 					font-size 18px
-			.table
-				font-size 13px
-				padding-left 8px
-				#history-dt-close-container
-					text-align right
-		.classHistoryActions
-			padding-top 2px
-		.historyClear
+		.clear
 			a
 				text-decoration none
 				color #FFF
@@ -143,12 +70,68 @@
 				margin-left 15px
 				&:hover
 					background #4E4E4E
+		.statsHolder
+			.stats
+				position static
+				opacity 1
+				border none
+				padding 0
+				.statsVar
+					color #2BA6CB
+					display block
+				span
+					display inline !important
+				.col
+					width 115px
+					display inline-block
+					white-space nowrap
 
-	.callHistory.enableCallHistory.history-shown
-		{fadeInPopup}
+		&.started .hist-details-arrow, 
+		&.started .callHistoryDetails
+			display none !important
 
-	.callHistory.enableCallHistory:not(.history-shown)
-		{fadeOut}
+		&.enableCallHistory.history-shown
+			{fadeInPopup}
 
-	.callHistory.enableCallHistory:not(.connected) .callLink
-		display none
+		&.enableCallHistory:not(.history-shown)
+			{fadeOut}
+
+		&.enableCallHistory:not(.connected) .callLink
+			display none
+
+		&[class*="call-selected"] .details
+			display table-cell
+			
+		&[class*="call-selected-0"] #call_0,
+		&[class*="call-selected-1"] #call_1,
+		&[class*="call-selected-2"] #call_2,
+		&[class*="call-selected-3"] #call_3,
+		&[class*="call-selected-4"] #call_4,
+		&[class*="call-selected-5"] #call_5,
+		&[class*="call-selected-6"] #call_6,
+		&[class*="call-selected-7"] #call_7,
+		&[class*="call-selected-8"] #call_8,
+		&[class*="call-selected-9"] #call_9,
+		&[class*="call-selected-10"] #call_10,
+		&[class*="call-selected-11"] #call_11,
+		&[class*="call-selected-12"] #call_12,
+		&[class*="call-selected-13"] #call_13,
+		&[class*="call-selected-14"] #call_14,
+		&[class*="call-selected-15"] #call_15,
+		&[class*="call-selected-16"] #call_16,
+		&[class*="call-selected-17"] #call_17,
+		&[class*="call-selected-18"] #call_18,
+		&[class*="call-selected-19"] #call_19,
+		&[class*="call-selected-20"] #call_20,
+		&[class*="call-selected-21"] #call_21,
+		&[class*="call-selected-22"] #call_22,
+		&[class*="call-selected-23"] #call_23,
+		&[class*="call-selected-24"] #call_24,
+		&[class*="call-selected-25"] #call_25,
+		&[class*="call-selected-26"] #call_26,
+		&[class*="call-selected-27"] #call_27,
+		&[class*="call-selected-28"] #call_28,
+		&[class*="call-selected-29"] #call_29,
+		&[class*="call-selected-30"] #call_30
+			box-shadow 2px 0 0 0 #292929, 0 2px 0 0 #888, 2px 2px 0 0 #888, 2px 0 0 0 #888 inset, 0 2px 0 0 #888 inset
+			position relative
