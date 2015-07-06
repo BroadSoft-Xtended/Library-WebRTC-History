@@ -19,12 +19,12 @@ describe('history', function() {
     callcontrol = bdsft_client_instances.test.callcontrol;
     testUA.mockWebRTC();
     mockStats();
-    rtcSession = createRtcSession();
-    session1 = createRtcSession("remote1")
-    session2 = createRtcSession("remote2")
-    session3 = createRtcSession("remote3")
-    session4 = createRtcSession("remote4")
-    session5 = createRtcSession("remote5")
+    rtcSession = testUA.historyRtcSession();
+    session1 = testUA.historyRtcSession("remote1")
+    session2 = testUA.historyRtcSession("remote2")
+    session3 = testUA.historyRtcSession("remote3")
+    session4 = testUA.historyRtcSession("remote4")
+    session5 = testUA.historyRtcSession("remote5")
   });
   beforeEach(function() {
     localStorage.clear();
@@ -57,7 +57,7 @@ describe('history', function() {
   });
   it('persistCall and toggle and show details and call', function() {
     testUA.connect();
-    bdsft_client_instances.test.history.persistCall(createRtcSession("sip:remote1@webrtc.broadsoft.com"));
+    bdsft_client_instances.test.history.persistCall(testUA.historyRtcSession("sip:remote1@webrtc.broadsoft.com"));
     historyview.rows[0].view.trigger("click");
     expect(bdsft_client_instances.test.history.callSelected).toEqual("call-selected-0");
     historyview.callLink.trigger("click");
@@ -65,7 +65,7 @@ describe('history', function() {
     expect(bdsft_client_instances.test.history.callSelected).toEqual(undefined);
   });
   it('WEBRTC-34 : persistCall and toggle and show details and call with existing call', function() {
-    bdsft_client_instances.test.history.persistCall(createRtcSession("sip:remote1@webrtc.broadsoft.com"));
+    bdsft_client_instances.test.history.persistCall(testUA.historyRtcSession("sip:remote1@webrtc.broadsoft.com"));
     testUA.startCall();
     historyview.rows[0].view.trigger("click");
     expect(bdsft_client_instances.test.history.callSelected).toEqual("call-selected-0");
@@ -74,6 +74,11 @@ describe('history', function() {
     expect(bdsft_client_instances.test.history.callSelected).toEqual(undefined);
   });
 
+  it('lastCall', function() {
+    bdsft_client_instances.test.history.persistCall(session1);
+    bdsft_client_instances.test.history.persistCall(session2);
+    expect(bdsft_client_instances.test.history.lastCall(), getCallCookieValue(session2));
+  });
   it('persistCall for multiple calls', function() {
     bdsft_client_instances.test.history.persistCall(session1);
     bdsft_client_instances.test.history.persistCall(session2);
@@ -155,17 +160,6 @@ describe('history', function() {
   function getCallCookieValue(session) {
     session = session || rtcSession;
     return session.start_time.getTime() + "|" + session.remote_identity.uri + "|up|" + JSON.stringify(stats.getAllAvg()) + "|00:00:00"
-  }
-
-  function createRtcSession(uri) {
-    return {
-      start_time: new Date(),
-      end_time: new Date(),
-      remote_identity: {
-        uri: (uri || "remote")
-      },
-      direction: "outgoing"
-    }
   }
 
   function mockStats() {
