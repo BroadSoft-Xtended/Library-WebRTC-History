@@ -19,6 +19,7 @@ describe('history', function() {
     callcontrol = bdsft_client_instances.test.callcontrol;
     testUA.mockWebRTC();
     mockStats();
+    constants = require('../lib/constants');
     rtcSession = testUA.historyRtcSession();
     session1 = testUA.historyRtcSession("remote1")
     session2 = testUA.historyRtcSession("remote2")
@@ -34,7 +35,7 @@ describe('history', function() {
   it('persistCall:', function() {
     bdsft_client_instances.test.history.persistCall(rtcSession);
     expect(localStorage.length).toEqual(1);
-    expect(localStorage[core.constants.HISTORY_PAGE_PREFIX+"0"]).toEqual(getCallCookieValue());
+    expect(localStorage[constants.HISTORY_PAGE_PREFIX+"0"]).toEqual(getCallCookieValue());
     expect(bdsft_client_instances.test.history.pagesAsString(), [getCallCookieValue()]);
   });
   it('persistCall and toggle:', function() {
@@ -83,7 +84,7 @@ describe('history', function() {
     bdsft_client_instances.test.history.persistCall(session1);
     bdsft_client_instances.test.history.persistCall(session2);
     expect(localStorage.length).toEqual(1);
-    expect(localStorage[core.constants.HISTORY_PAGE_PREFIX+"0"]).toEqual(getCallCookieValue(session2) + "~" + getCallCookieValue(session1));
+    expect(localStorage[constants.HISTORY_PAGE_PREFIX+"0"]).toEqual(getCallCookieValue(session2) + "~" + getCallCookieValue(session1));
     expect(bdsft_client_instances.test.history.pages(), [getCallCookieValue(session2) + "~" + getCallCookieValue(session1)]);
   });
   it('persistCall for multiple calls and higher than callsPerPage', function() {
@@ -92,8 +93,8 @@ describe('history', function() {
     bdsft_client_instances.test.history.persistCall(session2);
     bdsft_client_instances.test.history.persistCall(session3);
     expect(localStorage.length).toEqual(2);
-    expect(localStorage[core.constants.HISTORY_PAGE_PREFIX+"0"]).toEqual(getCallCookieValue(session2) + "~" + getCallCookieValue(session1));
-    expect(localStorage[core.constants.HISTORY_PAGE_PREFIX+"1"]).toEqual(getCallCookieValue(session3));
+    expect(localStorage[constants.HISTORY_PAGE_PREFIX+"0"]).toEqual(getCallCookieValue(session2) + "~" + getCallCookieValue(session1));
+    expect(localStorage[constants.HISTORY_PAGE_PREFIX+"1"]).toEqual(getCallCookieValue(session3));
     expect(bdsft_client_instances.test.history.pagesAsString(), [getCallCookieValue(session3), getCallCookieValue(session2) + "~" + getCallCookieValue(session1)]);
   });
   it('multiple pages and toggle', function() {
@@ -149,8 +150,8 @@ describe('history', function() {
     bdsft_client_instances.test.history.persistCall(session4);
     bdsft_client_instances.test.history.persistCall(session5);
     expect(localStorage.length).toEqual(2);
-    expect(localStorage[core.constants.HISTORY_PAGE_PREFIX+"0"]).toEqual(getCallCookieValue(session3) + "~" + getCallCookieValue(session2));
-    expect(localStorage[core.constants.HISTORY_PAGE_PREFIX+"1"]).toEqual(getCallCookieValue(session5) + "~" + getCallCookieValue(session4));
+    expect(localStorage[constants.HISTORY_PAGE_PREFIX+"0"]).toEqual(getCallCookieValue(session3) + "~" + getCallCookieValue(session2));
+    expect(localStorage[constants.HISTORY_PAGE_PREFIX+"1"]).toEqual(getCallCookieValue(session5) + "~" + getCallCookieValue(session4));
     expect(bdsft_client_instances.test.history.pagesAsString()).toEqual([
       getCallCookieValue(session5) + "~" + getCallCookieValue(session4), 
       getCallCookieValue(session3) + "~" + getCallCookieValue(session2)
