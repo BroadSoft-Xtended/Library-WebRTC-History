@@ -8,11 +8,15 @@ describe('history', function() {
     core = require('webrtc-core');
     testUA = core.testUA;
     testUA.setupLocalStorage();
-    testUA.createCore('sipstack');
+    testUA.createModelAndView('sipstack', {
+      sipstack: require('webrtc-sipstack')
+    });
     testUA.createModelAndView('history', {history: require('../'), 
       stats: require('webrtc-stats'),
       callcontrol: require('webrtc-callcontrol'),
-      messages: require('webrtc-messages')
+      messages: require('webrtc-messages'),
+      sipstack: require('webrtc-sipstack'),
+      sound: require('webrtc-sound')
     });
     statsview = bdsft_client_instances.test.statsview;
     stats = bdsft_client_instances.test.stats;
