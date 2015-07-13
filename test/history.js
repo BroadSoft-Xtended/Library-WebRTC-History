@@ -1,17 +1,13 @@
-var jsdom = require('mocha-jsdom');
-expect = require('expect');
-jsdom({});
-
+test = require('../node_modules/webrtc-sipstack/test/includes/common')(require('../node_modules/webrtc-core/test/includes/common'));
 describe('history', function() {
 
   before(function(){
     core = require('webrtc-core');
-    testUA = core.testUA;
-    testUA.setupLocalStorage();
-    testUA.createModelAndView('sipstack', {
+    test.setupLocalStorage();
+    test.createModelAndView('sipstack', {
       sipstack: require('webrtc-sipstack')
     });
-    testUA.createModelAndView('history', {history: require('../'), 
+    test.createModelAndView('history', {history: require('../'), 
       stats: require('webrtc-stats'),
       callcontrol: require('webrtc-callcontrol'),
       messages: require('webrtc-messages'),
@@ -21,19 +17,18 @@ describe('history', function() {
     statsview = bdsft_client_instances.test.statsview;
     stats = bdsft_client_instances.test.stats;
     callcontrol = bdsft_client_instances.test.callcontrol;
-    testUA.mockWebRTC();
     mockStats();
     constants = require('../lib/constants');
-    rtcSession = testUA.historyRtcSession();
-    session1 = testUA.historyRtcSession("remote1")
-    session2 = testUA.historyRtcSession("remote2")
-    session3 = testUA.historyRtcSession("remote3")
-    session4 = testUA.historyRtcSession("remote4")
-    session5 = testUA.historyRtcSession("remote5")
+    rtcSession = test.historyRtcSession();
+    session1 = test.historyRtcSession("remote1")
+    session2 = test.historyRtcSession("remote2")
+    session3 = test.historyRtcSession("remote3")
+    session4 = test.historyRtcSession("remote4")
+    session5 = test.historyRtcSession("remote5")
   });
   beforeEach(function() {
     localStorage.clear();
-    testUA.deleteAllCookies();
+    test.deleteAllCookies();
   });
 
   it('persistCall:', function() {
@@ -61,8 +56,8 @@ describe('history', function() {
     }
   });
   it('persistCall and toggle and show details and call', function() {
-    testUA.connect();
-    bdsft_client_instances.test.history.persistCall(testUA.historyRtcSession("sip:remote1@webrtc.broadsoft.com"));
+    test.connect();
+    bdsft_client_instances.test.history.persistCall(test.historyRtcSession("sip:remote1@webrtc.broadsoft.com"));
     historyview.rows[0].view.trigger("click");
     expect(bdsft_client_instances.test.history.callSelected).toEqual("call-selected-0");
     historyview.callLink.trigger("click");
@@ -70,8 +65,8 @@ describe('history', function() {
     expect(bdsft_client_instances.test.history.callSelected).toEqual(undefined);
   });
   it('WEBRTC-34 : persistCall and toggle and show details and call with existing call', function() {
-    bdsft_client_instances.test.history.persistCall(testUA.historyRtcSession("sip:remote1@webrtc.broadsoft.com"));
-    testUA.startCall();
+    bdsft_client_instances.test.history.persistCall(test.historyRtcSession("sip:remote1@webrtc.broadsoft.com"));
+    test.startCall();
     historyview.rows[0].view.trigger("click");
     expect(bdsft_client_instances.test.history.callSelected).toEqual("call-selected-0");
     historyview.callLink.trigger("click");
