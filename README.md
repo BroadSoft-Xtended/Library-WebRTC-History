@@ -3,7 +3,9 @@
 Displays the local call history. All calls are persisted in a localStorage key with prefix bdsft_webrtc_page_.
 
 Model : bdsft_webrtc.default.history
+
 View : bdsft_webrtc.default.historyview
+
 Dependencies : [Call Control](https://github.com/BroadSoft-Xtended/Library-WebRTC-CallControl), [Messages](https://github.com/BroadSoft-Xtended/Library-WebRTC-Messages), [SIP Stack](https://github.com/BroadSoft-Xtended/Library-WebRTC-SIPStack), [Sound](https://github.com/BroadSoft-Xtended/Library-WebRTC-Sound), [Stats](https://github.com/BroadSoft-Xtended/Library-WebRTC-Stats)
 
 ## Elements
