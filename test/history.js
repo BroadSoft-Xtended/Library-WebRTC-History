@@ -77,7 +77,7 @@ describe('history', function() {
   it('lastCall', function() {
     bdsft_client_instances.test.history.persistCall(session1);
     bdsft_client_instances.test.history.persistCall(session2);
-    expect(bdsft_client_instances.test.history.lastCall(), getCallCookieValue(session2));
+    expect(bdsft_client_instances.test.history.lastCall().destination).toEqual(session2.remote_identity.uri);
   });
   it('persistCall for multiple calls', function() {
     bdsft_client_instances.test.history.persistCall(session1);
