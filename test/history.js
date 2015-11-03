@@ -1,18 +1,24 @@
-test = require('../node_modules/webrtc-sipstack/test/includes/common')(require('../node_modules/webrtc-core/test/includes/common'));
+test = require('../node_modules/webrtc-sipstack/test/includes/common')(require('../node_modules/bdsft-sdk-test/lib/common'));
 describe('history', function() {
 
   before(function(){
     core = require('webrtc-core');
     test.setupLocalStorage();
     test.createModelAndView('sipstack', {
-      sipstack: require('webrtc-sipstack')
+      sipstack: require('webrtc-sipstack'),
+      eventbus: require('bdsft-sdk-eventbus'),
+      debug: require('bdsft-sdk-debug'),
+      core: require('webrtc-core')
     });
     test.createModelAndView('history', {history: require('../'), 
       stats: require('webrtc-stats'),
       callcontrol: require('webrtc-callcontrol'),
       messages: require('webrtc-messages'),
       sipstack: require('webrtc-sipstack'),
-      sound: require('webrtc-sound')
+      sound: require('webrtc-sound'),
+      eventbus: require('bdsft-sdk-eventbus'),
+      debug: require('bdsft-sdk-debug'),
+      core: require('webrtc-core')
     });
     statsview = bdsft_client_instances.test.stats.statsview;
     stats = bdsft_client_instances.test.stats.stats;
